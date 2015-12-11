@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Photo Sticker Application</title>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap3/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="node_modules/bootstrap3/dist/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+</head>
+<body ng-app="PhotoStickerApp" ng-controller="photoStickerController">
+	<div class="container">
+		<div class="jumbotron">
+    		<h1 class="text-center">Photo Sticker Application</h1>
+  		</div>
+		<div class="row">
+			<div class="col-xs-10">
+				<div class="photo_area">
+					<div class="fileUpload btn btn-primary" ng-show="showMainImageBtn">
+						<span>Add a new Image</span>
+						<input type="file" class="upload" onchange="angular.element(this).scope().mainImageUpload(event)" />
+					</div>
+					<div class="start_over pull-right">
+						<button type="button" class="btn btn-primary" ng-click="resetMainImage">Start Over</button>
+					</div>
+					<div class="photoArea" ng-show="showMainImage">
+						<img class="photo-thumb" ng-src="{{mainImage}}" />
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-2">
+				<h3>All Stickers</h3>
+				<div class="stickers-library">
+					<input type="file" onchange="angular.element(this).scope().stickerImageUpload(event)" multiple />
+    				<div ng-repeat="step in stepsModel">
+        				<img class="thumb" ng-src="{{step}}" />
+    				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

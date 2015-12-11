@@ -1,0 +1,16 @@
+{
+  "name": "photo_sticker",
+  "version": "1.0.0",
+  "description": "This is photo sticker application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ashwani Kumar Luhaniwal",
+  "license": "MIT",
+  "devDependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap3": "~3.3.5",
+    "angular": "~1.4.8"
+  }
+}
