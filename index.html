@@ -10,6 +10,9 @@
 	<script type="text/javascript" src="node_modules/bootstrap3/dist/js/bootstrap.min.js"></script>
 
 	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="js/ng-file-upload-shim.min.js"></script>
+	<script type="text/javascript" src="js/ng-file-upload.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 </head>
 <body ng-app="PhotoStickerApp" ng-controller="photoStickerController">
@@ -34,14 +37,51 @@
 			</div>
 			<div class="col-xs-2">
 				<h3>All Stickers</h3>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Upload New Stickers</button>
 				<div class="stickers-library">
-					<input type="file" onchange="angular.element(this).scope().stickerImageUpload(event)" multiple />
+					<!-- <input type="file" onchange="angular.element(this).scope().stickerImageUpload(event)" multiple /> -->
     				<div ng-repeat="step in stepsModel">
-        				<img class="thumb" ng-src="{{step}}" />
+        				<img class="thumb" ng-src="{{step.imgUrl}}" />
     				</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<!-- Modal -->
+	<div id="myModal" class="modal fade" role="dialog">
+  		<div class="modal-dialog">
+    		<!-- Modal content-->
+    		<div class="modal-content">
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal">&times;</button>
+        			<h4 class="modal-title">Please add stickers in the library</h4>
+      			</div>
+      			<div class="modal-body">
+      				<form name="myForm">
+      					<fieldset>
+      						Sticker Title:
+      						<input type="text" name="userName" ng-model="username" size="31" required>
+      						<i ng-show="myForm.userName.$error.required">*required</i>
+      						<br>
+      						Photo:
+      						<input type="file" ngf-select ng-model="picFile" name="file" accept="image/*" ngf-max-size="2MB" required>
+      						<i ng-show="myForm.file.$error.required">*required</i>
+      						<br />
+      						<i ng-show="myForm.file.$error.maxSize">File too large {{picFile.size / 1000000|number:1}}MB: max 2M</i>
+      						<img ng-show="myForm.file.$valid" ngf-thumbnail="picFile" class="thumb">
+      						<button ng-click="picFile = null" ng-show="picFile">Remove</button>
+      						<br />
+      						<button ng-disabled="!myForm.$valid" ng-click="uploadPic(picFile)">Submit</button>
+      					</fieldset>
+      				</form>
+      			</div>
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      			</div>
+    		</div>
+  		</div>
+	</div>
+
 </body>
 </html>
