@@ -72,10 +72,10 @@ body {
 .thumb{
     border: 1px solid #ccc;
     float: left;
-    height: 70px;
-    margin: 5px;
+    height: 150px;
+    margin: 0px 2px;
     padding: 2px;
-    width: 70px;
+    width: 150px;
 }
 .photo-thumb {
     border: 1px solid #ccc;
@@ -87,10 +87,6 @@ body {
 .container .jumbotron {
     background-color: #ccc;
     padding: 20px;
-}
-input[type="file"] {
-	display: block;
-	margin : 0 auto;
 }
 .fileUpload {
     position: relative;
@@ -107,4 +103,20 @@ input[type="file"] {
     cursor: pointer;
     opacity: 0;
     filter: alpha(opacity=0);
+}
+.modal-title {
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.42857;
+    margin: 0;
+}
+.sticker_box {
+    margin: 5px;
+}
+.sticker_box .sticker_title {
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
 }

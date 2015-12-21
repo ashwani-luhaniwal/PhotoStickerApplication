@@ -1,19 +1,18 @@
-var photoStickerApp = angular.module('PhotoStickerApp', ['ngFileUpload', 'LocalStorageModule']);
+var photoStickerApp = angular.module('PhotoStickerApp', ['ngFileUpload', 'LocalStorageModule', 'ngDragDrop']);
 
-photoStickerApp.controller('photoStickerController', ['$scope', 'Upload', '$timeout', 'localStorageService', function($scope, Upload, $timeout, localStorageService) {
+photoStickerApp.controller('photoStickerController', ['$scope', 'Upload', 'localStorageService', function($scope, Upload, localStorageService) {
 	
 	$scope.stepsModel = [];
+	$scope.imageTitle = null;
 
 	$scope.showMainImage = false;
 	$scope.showMainImageBtn = true;
 
-	/*$scope.mainImageUpload = function(event) {
-		// var files = event.target.files; // FileList object
+	$scope.mainImageUpload = function(event) {
 		var file = event.target.files[0];
 
 		var render = new FileReader();
 		render.onload = $scope.mainImageIsLoaded;
-		// alert(render.onload);
 		render.readAsDataURL(file);
 	}
 
@@ -25,7 +24,7 @@ photoStickerApp.controller('photoStickerController', ['$scope', 'Upload', '$time
 		});
 	}
 
-	$scope.resetMainImage = function() {
+	/*$scope.resetMainImage = function() {
 		if ($scope.mainImage) {
 			$scope.mainImage = " ";
 		}
@@ -48,25 +47,26 @@ photoStickerApp.controller('photoStickerController', ['$scope', 'Upload', '$time
 		});
 	}*/
 
+	// Get list of all stickers from localStorage
 	for(var i=0, len=localStorage.length; i<len; i++) {
-    		var key = localStorage.key(i);
-    		var value = localStorage[key];
-    		var allUser = JSON.parse(value);
-    		$scope.stepsModel.push(allUser);
-    		console.log($scope.stepsModel);  		
-    	}
+    	var key = localStorage.key(i);
+    	var value = localStorage[key];
+    	var allStickers = JSON.parse(value);
+    	var stickers = JSON.parse(allStickers);
+    	$scope.stepsModel.push(stickers);
+ 		
+    }
 
+    // Uploading all the stickers using form
 	$scope.uploadPic = function(file) {
-		// file.upload = Upload.base64DataUrl(file);
 
 		if(localStorageService.isSupported) {
-    		console.log("Local Storage is supported.");
-
+    		
     		Upload.base64DataUrl(file).then(function (url) {
 				// console.log(url);
 
 				var imgInfo = {
-					imgTitle: $scope.username,
+					imgTitle: $scope.imageTitle,
 					imgUrl: url
 				};
 				var lsLength = localStorageService.length();
@@ -74,39 +74,25 @@ photoStickerApp.controller('photoStickerController', ['$scope', 'Upload', '$time
 
 				$scope.stepsModel.push(imgInfo);
 			});
+
   		}
 
-		// var localStorageItem = localStorageService.get("img0");
-		// alert(localStorageItem);
 	}
 
 }]);
 
-(function() {
-	var fileInput = document.getElementById('fileInput');
-	var fileDisplayArea = document.getElementById('fileDisplayArea');
-
-	fileInput.addEventListener('change', function(e) {
-		var file = fileInput.files[0];
-		var imageType = /image.*/;
-
-		if (file.type.match(imageType)) {
-			var reader = new FileReader();
-
-			reader.onload = function(e) {
-				fileDisplayArea.innerHTML = "";
-
-				var img = new Image();
-				img.src = reader.result;
-
-				fileDisplayArea.appendChild(img);
-			}
-
-			render.readAsDataURL(file);
-		}
-		else {
-			fileDisplayArea.innerHTML = "File not supported!";
-		}
-
+$(document).ready(function() {
+	$('.thumb').draggable({
+    	appendTo: '#photo-thumb',
+    	cursor: 'move',
+    	revertDuration: 1,
+    	revert:"valid",
+    	helper:"clone"
+	});
+	$('#photo-thumb').droppable({
+    	accept: '.thumb',
+        drop: function (event, ui) {
+			ui.helper.clone().appendTo('#photo-thumb');
+    	}
 	});
 });
